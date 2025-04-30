@@ -1,33 +1,25 @@
-import discord
+import os
+import asyncio
+from dotenv import load_dotenv
+from discord import Intents
 from discord.ext import commands
 
-import google.generativeai as genai
 
-import os
-from dotenv import load_dotenv
+async def main() -> None:
+    load_dotenv()
+    intents = Intents.all()
+    client = commands.Bot(command_prefix='!', intents=intents)
 
-load_dotenv()
+    @client.event
+    async def on_ready() -> None:
+        print(f'Logged in as {client.user.name} - {client.user.id}')
+        print('------')
 
-genai.configure(api_key=os.getenv('GENAI_API_KEY'))
-model = genai.GenerativeModel('gemini-2.0-flash')
+    for folder in os.listdir('modules'):
+        if os.path.exists(os.path.join('modules', folder, 'cog.py')):
+            await client.load_extension(f'modules.{folder}.cog')
 
-intents = discord.Intents.all()
-bot = commands.Bot(command_prefix='!', intents=intents)
+    await client.start(os.getenv('BOT_TOKEN'))
 
-@bot.event
-async def on_ready() -> None:
-    print(f'Logged in as {bot.user.name} - {bot.user.id}')
-    print('------')
-
-@bot.command()
-async def ping(ctx: commands.Context) -> None:
-    await ctx.reply('Pong!')
-
-@bot.command()
-async def chat(ctx: commands.Context, *, message: str) -> None:
-    response = model.generate_content(message)
-    await ctx.reply(response.text)
-
-
-
-bot.run(token=os.getenv('BOT_TOKEN'))
+if __name__ == '__main__':
+    asyncio.run(main())
