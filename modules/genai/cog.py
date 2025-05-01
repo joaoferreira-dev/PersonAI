@@ -24,7 +24,7 @@ class GenAI(commands.Cog, name="Gen AI"):
 
             # Generate content in streaming mode with a token limit
             response = self.model.generate_content(
-                message + '(limit of 4000 characters)',
+                message + ' (limit of 2000 characters)',
                 stream=True
             )
 
