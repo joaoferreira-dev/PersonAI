@@ -1,6 +1,7 @@
 from discord.ext import commands
 import os
 import google.generativeai as genai
+from src.utils.logger import logger
 
 
 class GenAI(commands.Cog, name="Gen AI"):
@@ -18,6 +19,7 @@ class GenAI(commands.Cog, name="Gen AI"):
         """
         Prompt command to send a message to the generative AI model.
         """
+        logger.info(f"Prompt command invoked by {ctx.author} in {ctx.channel}")
         try:
             # Send an initial message
             sent_message = await ctx.reply("Processando sua solicitação, por favor aguarde...")

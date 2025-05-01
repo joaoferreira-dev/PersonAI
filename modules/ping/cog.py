@@ -1,4 +1,5 @@
 from discord.ext import commands
+from src.utils.logger import logger
 
 class Ping(commands.Cog, name="Ping"):
     """
@@ -13,6 +14,7 @@ class Ping(commands.Cog, name="Ping"):
         """
         Ping command to check if the bot is working.
         """
+        logger.info(f"Ping command called by {ctx.author.name}")
         await ctx.reply('Pong!')
 
 async def setup(bot: commands.Bot) -> None:
