@@ -8,7 +8,7 @@ from discord.ext import commands
 async def main() -> None:
     load_dotenv()
     intents = Intents.all()
-    client = commands.Bot(command_prefix='!', intents=intents)
+    client = commands.Bot(command_prefix=os.getenv('BOT_PREFIX'), intents=intents)
 
     @client.event
     async def on_ready() -> None:
